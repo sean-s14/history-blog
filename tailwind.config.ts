@@ -33,6 +33,9 @@ const config = {
           950: "#2f1f1a",
         },
       },
+      screens: {
+        xs: "480px",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

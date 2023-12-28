@@ -3,6 +3,7 @@ import { Aleo } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navigation from "@/components/navigation/navigation";
+import Footer from "@/components/footer/footer";
 
 const aleo = Aleo({ subsets: ["latin"] });
 
@@ -27,7 +28,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navigation />
-          {children}
+          <div>{children}</div>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
