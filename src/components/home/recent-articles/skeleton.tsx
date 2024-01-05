@@ -1,5 +1,5 @@
 function SkeletonIndividual() {
-  return <div className="bg-stone-500 rounded-lg h-[300px] w-[400px]"></div>;
+  return <div className="bg-stone-500 rounded-lg h-[225px] w-[300px]"></div>;
 }
 
 export default function RecentArticlesSkeleton() {

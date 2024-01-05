@@ -1,6 +1,8 @@
 import { getRecentArticles } from "@/app/actions";
 import Image from "next/image";
 
+// TODO: Add placeholder image in S3 bucket
+// TODO: Add function to retrieve placeholder image
 export default async function RecentArticles() {
   const articles = await getRecentArticles();
 
@@ -11,8 +13,8 @@ export default async function RecentArticles() {
           key={article.id}
           src={article.thumbnail || "/images/placeholder.png"}
           alt={article.title}
-          width={400}
-          height={300}
+          width={300}
+          height={225}
           className="rounded-lg"
         />
       ))}
