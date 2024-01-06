@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={aleo.className}>
+      <body className={aleo.className + " dark:bg-stone-900"}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -28,7 +28,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navigation />
-          <div>{children}</div>
+          <div style={{ minHeight: "calc(100vh - 130px)" }}>{children}</div>
           <Footer />
         </ThemeProvider>
       </body>

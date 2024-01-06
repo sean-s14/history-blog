@@ -1,3 +1,4 @@
+import { numberToOrdinal } from "../src/helpers/ordinalUtils";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -11,27 +12,25 @@ async function main() {
   });
 
   // Articles
-  const article1 = await prisma.article.create({
-    data: {
-      title: "My first article",
-      slug: "my-first-article",
-      description: "This is the description of my first article",
-      content: "This is my first article",
-      tags: ["prisma", "typescript", "nodejs"],
-      authorId: author1.id,
-    },
-  });
-  const article2 = await prisma.article.create({
-    data: {
-      title: "My Second article",
-      slug: "my-second-article",
-      description: "This is the description of my second article",
-      content: "This is my second article",
-      tags: ["nextjs", "react", "nextauthjs"],
-      authorId: author1.id,
-    },
-  });
+  for (let i = 1; i <= 20; i++) {
+    const ordinal = numberToOrdinal(i);
+    const capitalisedOrdinal =
+      ordinal.charAt(0).toUpperCase() + ordinal.slice(1);
+
+    await prisma.article.create({
+      data: {
+        title: `My ${capitalisedOrdinal} article`,
+        slug: `my-${ordinal}-article`,
+        description: `This is the description of my ${ordinal} article`,
+        content: `This is my ${ordinal} article`,
+        thumbnail: `dev/${ordinal}.jpg`,
+        tags: ["prisma", "typescript", "nodejs"],
+        authorId: author1.id,
+      },
+    });
+  }
 }
+
 main()
   .then(async () => {
     await prisma.$disconnect();

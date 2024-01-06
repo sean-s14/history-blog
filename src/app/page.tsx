@@ -5,7 +5,7 @@ import Welcome from "@/components/home/welcome";
 
 export default function Home() {
   return (
-    <main className="dark:bg-stone-900 flex flex-col items-center py-12 xs:py-16 sm:py-20 px-6 xs:px-10 sm:p-14">
+    <main className="flex flex-col items-center py-12 xs:py-16 sm:py-20 px-6 xs:px-10 sm:p-14">
       <Welcome />
 
       {/* Recent Posts */}

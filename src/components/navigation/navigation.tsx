@@ -15,13 +15,13 @@ const links = [
     href: "/",
   },
   {
-    name: "Articles",
-    href: "/",
+    name: "Blog",
+    href: "/blog",
   },
-  {
-    name: "Contact",
-    href: "/",
-  },
+  // {
+  //   name: "About",
+  //   href: "/",
+  // },
 ];
 
 export default function Navigation() {
