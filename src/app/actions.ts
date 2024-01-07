@@ -1,9 +1,9 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { GetObjectCommand } from "@aws-sdk/client-s3";
-import { s3Client } from "@/lib/s3client";
+import { getSignedUrl } from "@/helpers/getSignedUrl";
+
+// TODO: Instead of throwing error if s3 bucket is not set, we can use a default image
 
 export async function getRecentArticles() {
   const articles = await prisma.article.findMany({
@@ -19,15 +19,34 @@ export async function getRecentArticles() {
 
   // Get the signed url for each thumbnail in articles
   for (let article of articles) {
-    const params = {
-      Bucket: process.env.AWS_S3_BUCKET,
-      Key: article.thumbnail || "",
-      Expires: 60 * 5, // 5 minutes
-    };
+    article.thumbnail = await getSignedUrl(article);
+  }
 
-    const command = new GetObjectCommand(params);
-    const url = await getSignedUrl(s3Client, command, { expiresIn: 300 });
-    article.thumbnail = url;
+  return articles;
+}
+
+export async function getArticles(page: number, pageSize: number) {
+  console.log("Cache check, page", page);
+  const skip = (page - 1) * pageSize;
+
+  // retrieve articles with pagination
+  const articles = await prisma.article.findMany({
+    skip: skip,
+    take: pageSize,
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  if (!process.env.AWS_S3_BUCKET) {
+    throw new Error("Missing AWS_S3_BUCKET env var");
+  }
+
+  // TODO: This is not efficient, we should use batchGetItem
+  // TODO: Find a way to cache the signed urls
+  // Get the signed url for each thumbnail in articles
+  for (let article of articles) {
+    article.thumbnail = await getSignedUrl(article);
   }
 
   return articles;
@@ -41,4 +60,9 @@ export async function getArticle(slug: string) {
   });
 
   return article;
+}
+
+export async function getArticleSize() {
+  const count = await prisma.article.count();
+  return count;
 }
